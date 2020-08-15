@@ -6,7 +6,8 @@ namespace Serialization
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Person p = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
+            p.Serialize();
         }
     }
 }

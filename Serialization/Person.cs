@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Serialization
 {
@@ -36,6 +38,14 @@ namespace Serialization
         public override string ToString()
         {
             return $"{Name} is a {PersonGender} born on {BirthDate} ({Age} years old).";
+        }
+
+        public void Serialize()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt", FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, this);
+            stream.Close();
         }
     }
 }
