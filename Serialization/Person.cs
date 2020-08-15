@@ -4,11 +4,13 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Serialization
 {
     [Serializable]
-    public class Person
+    public class Person : IEquatable<Person>
     {
        
        
@@ -51,6 +53,29 @@ namespace Serialization
             Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt", FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, this);
             stream.Close();
+        }
+
+        public Person Deserialize()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt", FileMode.Open, FileAccess.Read, FileShare.None);
+            Person p = (Person)formatter.Deserialize(stream);
+            stream.Close();
+            return p;
+        }
+
+      
+
+        public int GetHashCode(object obj)
+        {
+            return this.GetHashCode();
+        }
+
+        public bool Equals([AllowNull] Person other)
+        {
+            return other.Name == Name && other.PersonGender == PersonGender && other.BirthDate == BirthDate;
+    
+            
         }
     }
 }

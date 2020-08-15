@@ -8,6 +8,9 @@ namespace Serialization
         {
             Person p = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
             p.Serialize();
+
+            Person c = p.Deserialize();
+            Console.WriteLine(c.ToString());
         }
     }
 }
