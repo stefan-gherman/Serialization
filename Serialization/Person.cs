@@ -10,15 +10,19 @@ using System.Diagnostics.CodeAnalysis;
 namespace Serialization
 {
     [Serializable]
-    public class Person : IEquatable<Person>
+    public class Person : IEquatable<Person>, IDeserializationCallback
     {
-       
+        private string _name;
+        [NonSerialized]
+        private int _age;
+        private Gender _personGender;
+        private DateTime _birthDate;
        
 
-        public string Name { get; set; }
-        public int Age { get; private set; }
-        public Gender PersonGender { get; set; }
-        public DateTime BirthDate { get; set; }
+        public string Name { get { return _name; } set { _name = value; } }
+        public int Age { get {return _age; } private set {_age = value; } }
+        public Gender PersonGender { get {return _personGender; } set {_personGender = value; } }
+        public DateTime BirthDate { get {return _birthDate; } set {_birthDate = value; } }
 
         public Person(string name, Gender gender, DateTime birthDate)
         {
@@ -50,7 +54,7 @@ namespace Serialization
         public void Serialize()
         {
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt", FileMode.Create, FileAccess.Write, FileShare.None);
+            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.bin", FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, this);
             stream.Close();
         }
@@ -58,7 +62,7 @@ namespace Serialization
         public Person Deserialize()
         {
             IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt", FileMode.Open, FileAccess.Read, FileShare.None);
+            Stream stream = new FileStream(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.bin", FileMode.Open, FileAccess.Read, FileShare.None);
             Person p = (Person)formatter.Deserialize(stream);
             stream.Close();
             return p;
@@ -76,6 +80,11 @@ namespace Serialization
             return other.Name == Name && other.PersonGender == PersonGender && other.BirthDate == BirthDate;
     
             
+        }
+
+        public void OnDeserialization(object sender)
+        {
+            CalculateAge();
         }
     }
 }

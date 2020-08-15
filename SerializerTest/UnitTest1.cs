@@ -52,14 +52,14 @@ namespace SerializerTest
             //act
             p.Serialize();
             //assert
-            Assert.IsTrue(File.Exists(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt"));
+            Assert.IsTrue(File.Exists(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.bin"));
         }
 
         [Test]
         public void TestDeserialzerWorksAsExpected()
         {
             //arrange
-            File.Delete(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt");
+            File.Delete(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.bin");
             Person mockPerson = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
             Person expectedPerson = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
             //act
