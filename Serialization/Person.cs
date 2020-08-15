@@ -25,6 +25,11 @@ namespace Serialization
             BirthDate = birthDate;
             CalculateAge();
         }
+
+        public Person()
+        {
+
+        }
         private void CalculateAge()
         {
             Age = DateTime.Now.Year - BirthDate.Year;
