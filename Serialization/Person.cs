@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Serialization
 {
     [Serializable]
-    public class Person : IEquatable<Person>, IDeserializationCallback
+    public class Person : IEquatable<Person>, IDeserializationCallback, ISerializable
     {
         private string _name;
         [NonSerialized]
@@ -78,13 +78,27 @@ namespace Serialization
         public bool Equals([AllowNull] Person other)
         {
             return other.Name == Name && other.PersonGender == PersonGender && other.BirthDate == BirthDate;
-    
-            
+
+
         }
+
+        public Person(SerializationInfo info, StreamingContext context)
+        {
+            _name = (string)info.GetValue("name", typeof(string));
+            _birthDate = (DateTime)info.GetValue("birthdate", typeof(DateTime));
+            _personGender = (Gender)info.GetValue("gender", typeof(Gender));
+        }   
 
         public void OnDeserialization(object sender)
         {
             CalculateAge();
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("name", _name, typeof(string));
+            info.AddValue("birthdate", _birthDate, typeof(DateTime));
+            info.AddValue("gender", _personGender, typeof(Gender));
         }
     }
 }
