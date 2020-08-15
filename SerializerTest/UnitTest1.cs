@@ -54,5 +54,19 @@ namespace SerializerTest
             //assert
             Assert.IsTrue(File.Exists(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt"));
         }
+
+        [Test]
+        public void TestDeserialzerWorksAsExpected()
+        {
+            //arrange
+            File.Delete(@"C:\Users\Stefan Gherman\source\repos\Serialization\Serialization\bin\Debug\netcoreapp3.1\MyFile.txt");
+            Person mockPerson = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
+            Person expectedPerson = new Person("Tim", Gender.Male, DateTime.Parse("08-02-1997"));
+            //act
+            mockPerson.Serialize();
+            Person testPerson = mockPerson.Deserialize();
+            //assert
+            Assert.AreEqual(testPerson, expectedPerson);
+        }
     }
 }
